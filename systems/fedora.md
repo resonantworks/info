@@ -5,8 +5,7 @@
   - [Install dev tools](#install-dev-tools)
     - [General](#general)
     - [C/C++](#cc)
-      - [C/C++ Issues](#cc-issues)
-        - [32-bit C/C++ LLVM CMake build fails on missing include](#32-bit-cc-llvm-cmake-build-fails-on-missing-include)
+      - [32-bit C/C++ GCC/LLVM CMake build fails on missing include](#32-bit-cc-gccllvm-cmake-build-fails-on-missing-include)
     - [.NET](#net)
 
 ## Common tasks
@@ -36,16 +35,14 @@ sudo dnf install llvm clang lld lldb clang-tools-extra clang-analyzer
 sudo dnf install compiler-rt.i686 libcxx.i686 libstdc++-devel.i686 # llvm 32-bit support (stdlib=libc++)
 ```
 
-#### C/C++ Issues
-
-##### 32-bit C/C++ LLVM CMake build fails on missing include
+#### 32-bit C/C++ GCC/LLVM CMake build fails on missing include
 
 > /usr/bin/../lib/gcc/x86_64-redhat-linux/15/../../../../include/c++/15/cstdint:40:10: fatal error: 'bits/c++config.h' file not found
 
-Add the following to the clang command line (see [toolchain-linux-clang.make](assets/toolchain-linux-clang.cmake)):
+Add the following to the clang command line (see [toolchain-linux-clang.make](assets/toolchain-linux-clang.cmake) and [toolchain-linux-gcc.make](assets/toolchain-linux-gcc.cmake)):
 
 ```sh
--m32 --target=i686-redhat-linux -isystem /usr/include/c++/15/i686-redhat-linux
+-m32 -isystem /usr/include/c++/15/i686-redhat-linux
 ```
 
 ### .NET
