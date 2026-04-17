@@ -21,7 +21,7 @@
 ### General
 
 ```sh
-sudo dnf install git pip pipx
+sudo dnf install awk git pip pipx # awk required by git for tab autocomplete
 ```
 
 ### C/C++
