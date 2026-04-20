@@ -4,6 +4,7 @@
   - [Common tasks](#common-tasks)
   - [Install dev tools](#install-dev-tools)
     - [General](#general)
+    - [Vim](#vim)
     - [C/C++](#cc)
       - [32-bit C/C++ GCC/LLVM CMake build fails on missing include](#32-bit-cc-gccllvm-cmake-build-fails-on-missing-include)
     - [.NET](#net)
@@ -22,6 +23,13 @@
 
 ```sh
 sudo dnf install awk git pip pipx # awk required by git for tab autocomplete
+```
+
+### Vim
+
+```sh
+sudo dnf install vim
+git config --global core.editor vim
 ```
 
 ### C/C++
