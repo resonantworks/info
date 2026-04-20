@@ -10,6 +10,7 @@
     - [Git bash status line](#git-bash-status-line)
       - [32-bit C/C++ GCC/LLVM CMake build fails on missing include](#32-bit-cc-gccllvm-cmake-build-fails-on-missing-include)
     - [.NET](#net)
+    - [STM32 CLT](#stm32-clt)
 
 ## Common tasks
 
@@ -84,4 +85,25 @@ Add the following to the clang command line (see [toolchain-linux-clang.make](as
 sudo dnf install glibc libgcc ca-certificates openssl-libs libstdc++ libicu tzdata krb5-libs zlib # dependencies
 sudo dnf install dotnet-runtime-10.0 # <-- just the runtime - change to latest version
 sudo dnf install dotnet-sdk-10.0 # <-- full dev sdk - change to latest version
+```
+
+### STM32 CLT
+
+Current versions of Fedora block installation due to new security policies.
+> To use ST-LINK or J-LINK within WSL, see [WSL2 > Access USB device within WSL2](wsl2.md#access-usb-device-within-wsl2)
+
+- Download RPM version of STM32CubeCLT
+- Unzip, then:
+
+```sh
+# extract rpm files
+sh st-stm32cubeclt_*_amd64.rpm_bundle.sh --target extracted_clt --noexec
+sudo rpm -ivh --nodigest --nodeps st-stm32cubeclt_*.x86_64.rpm
+```
+
+- Add environment variable to `~/.bashrc`
+
+```sh
+# STM32CubeCLT
+export STM32CLT_PATH='/opt/st/stm32cubeclt_?.???.0'
 ```
