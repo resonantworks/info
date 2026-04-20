@@ -65,7 +65,7 @@ Append the following to  `~/.bashrc`
 ```sh
 # git bash status line
 source /usr/share/git-core/contrib/completion/git-prompt.sh
-export PS1='\[\e[32m\]\u@\h\[\e[0m\]:\[\e[32m\]\w\[\e[36m\]$(__git_ps1 " (%s)")\[\e[0m\]$(if [ -n "$(__git_ps1)" ]; then echo -e "\n\$ "; else echo "\$ "; fi)'
+export PS1='\[\e[32m\]\u@\h\[\e[0m\]:\[\e[33m\]\w\[\e[36m\]$(__git_ps1 " (%s)")\[\e[0m\]$(if [ -n "$(__git_ps1)" ]; then echo -e "\n\$ "; else echo "\$ "; fi)'
 ```
 
 #### 32-bit C/C++ GCC/LLVM CMake build fails on missing include
