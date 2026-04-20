@@ -17,6 +17,19 @@
 | Install | `sudo dnf install <package>` |
 | Search  | `dnf search <package>`       |
 
+## Update bash aliases
+
+Append the following to  `~/.bashrc`
+
+```sh
+# User customisations
+alias l='ls -CF'
+alias la='ls -A'
+alias ll='ls -alF'
+alias ls='ls --color=auto'
+alias vi='/usr/bin/vim'
+```
+
 ## Install dev tools
 
 ### General
@@ -28,7 +41,7 @@ sudo dnf install awk git pip pipx # awk required by git for tab autocomplete
 ### Vim
 
 ```sh
-sudo dnf install vim
+sudo dnf install vim git ack curl
 git config --global core.editor vim
 ```
 
