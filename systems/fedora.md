@@ -89,6 +89,12 @@ sudo dnf install dotnet-sdk-10.0 # <-- full dev sdk - change to latest version
 
 ### STM32 CLT
 
+Install dependencies:
+
+```sh
+sudo dnf install ncurses-compat-libs
+```
+
 Current versions of Fedora block installation due to new security policies.
 > To use ST-LINK or J-LINK within WSL, see [WSL2 > Access USB device within WSL2](wsl2.md#access-usb-device-within-wsl2)
 
