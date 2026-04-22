@@ -100,7 +100,7 @@ wsl --shutdown
   - *Required for ST tweaked Arm GNU gdb and SVD files*
   - Can use vanilla [Arm GNU Toolchain](https://developer.arm.com/Tools%20and%20Software/GNU%20Toolchain) instead
 - Install [J-Link Software and Documentation Pack](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack) on Windows
-  - Set the Windows user environment variable `JLINK_PATH`=`C:\Program Files\SEGGER\JLink_V???` (installation location of J-Link executables)
+  - Set the Windows user environment variable `JLINK_PATH`=`C:\Program Files\SEGGER\JLink` (installation location of J-Link executables)
 - Change WSL2 networking to mirrored. Update `%USERPROFILE%\.wslconfig`:
 
 ```ini
