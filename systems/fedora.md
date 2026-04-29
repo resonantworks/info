@@ -38,7 +38,7 @@ alias vi='/usr/bin/vim'
 ### General
 
 ```sh
-sudo dnf install awk git pip pipx # awk required by git for tab autocomplete
+sudo dnf install awk git jq pip pipx # awk required by git for tab autocomplete
 ```
 
 ### Vim
@@ -107,7 +107,13 @@ sh st-stm32cubeclt_*_amd64.rpm_bundle.sh --target extracted_clt --noexec
 sudo rpm -ivh --nodigest --nodeps st-stm32cubeclt_*.x86_64.rpm
 ```
 
-- Add environment variable to `~/.bashrc`
+- Remove injected paths added on start-up
+
+```sh
+sudo mv /etc/profile.d/cubeclt-bin-path_1.18.0.sh /etc/profile.d/cubeclt-bin-path_1.18.0.sh.disable
+```
+
+- Add environment variable used by CMake scripts to `~/.bashrc`
 
 ```sh
 # STM32CubeCLT

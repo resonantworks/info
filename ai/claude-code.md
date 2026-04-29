@@ -20,11 +20,35 @@ sudo dnf install bubblewrap socat
 {
   "sandbox": {
     "enabled": true,
+    "allowUnsandboxedCommands": false,
     "filesystem": {
-      "denyRead": ["/mnt/c", "/mnt/d"],
-      "denyWrite": ["/mnt/c", "/mnt/d"]
+      "allowWrite": [
+        "/tmp"
+      ],
+      "denyWrite": [
+        "/mnt/c",
+      ],
+      "denyRead": [
+        "/mnt/c",
+      ]
     },
-    "allowUnsandboxedCommands": false
-  }
+    "excludedCommands": [
+      "ctest"
+    ]
+  },
 }
 ```
+
+## Custom status line
+
+1. Copy [statusline.sh](/assets/statusline.sh) to `~/.claude/statusline.sh`
+1. Update `~/.claude/settings.json` to include/modify the `statusLine` entry (replace `<user>` with username):
+
+```json
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"/home/<user>/.claude/statusline.sh\""
+  }
+```
+
+> Requires `jq` to be installed.
