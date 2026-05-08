@@ -1,5 +1,12 @@
 # Claude Code
 
+## GitHub integration
+
+1. GitHub > Create new repo with README.md (requires at least one commit)
+1. Open web editor using `.` keyboard shortcut and drag-drop any needed files into repo
+1. Configure [Claude GitHub App](https://github.com/apps/claude) allow access to selected GitHub repos
+1. Go to [Claude Code Web](https://claude.ai/code) and create a new workspace to start working on repo
+
 ## Sandboxing within WSL2
 
 - Install pre-requirements
