@@ -1,10 +1,61 @@
 # WSL2
 
 - [WSL2](#wsl2)
+  - [Install](#install)
+  - [WSL Settings](#wsl-settings)
+  - [Install distribution](#install-distribution)
   - [Access USB device within WSL2](#access-usb-device-within-wsl2)
   - [STM32](#stm32)
     - [ST-LINK without usbipd (ST-LINK GDB server - non-admin)](#st-link-without-usbipd-st-link-gdb-server---non-admin)
     - [J-LINK without usbipd (J-LINK GDB server - non-admin)](#j-link-without-usbipd-j-link-gdb-server---non-admin)
+
+## Install
+
+- Admin command prompt:
+
+```sh
+wsl --install
+wsl --update
+```
+
+## WSL Settings
+
+Start menu > WSL Settings:
+
+- Memory and processor
+  - Processor Count: *Total core count if compiling, or nearest, otherwise half or quarter*
+  - Memory Size: *50% total RAM size*
+  - Swap Size: *100% total RAM size*
+  - *(optional)* Swap file location: *Set to specific path (ie, `C:\wsl\swap\swap.vhdx`)*
+- File System
+  - Default VHD Size: *Sensible limit (ie, `32768Mb`)*
+-Networking
+  - Networking mode: `NAT`
+    - *or* `Mirrored` *if going to debug firmware using vscode:WSL --> Windows ST-LINK/J-LINK GDB server*
+- Optional Features
+  - Enable GUI applications: `ON`
+  - Enable nested virtualisation: `ON`
+  - Enable sparse VHD by default: `ON`
+
+## Install distribution
+
+Create folder to hold `vhdx` files (ie, `C:\wsl\ubuntu`)
+
+Command prompt:
+
+```sh
+wsl --list --online                        # <-- Note name of wanted distro
+
+wsl --install <DISTRO> --location "<PATH>"
+# wsl --install Ubuntu-26.04 --location "C:\wsl\ubuntu"
+
+wsl --manage <DISTRO> --resize <SIZE>      # (optional) Only required when different to WSL Settings
+# wsl --manage Ubuntu-26.04 --resize 64GB
+
+wsl --set-default <DISTRO>
+# wsl --set-default Ubuntu-26.04
+wsl --list
+```
 
 ## Access USB device within WSL2
 
@@ -42,13 +93,8 @@ lsusb
 ### ST-LINK without usbipd (ST-LINK GDB server - non-admin)
 
 - Install [STM32CubeCLT](https://www.st.com/en/development-tools/stm32cubeclt.html) on both Windows and within WSL2 ([Fedora example](fedora.md#stm32-clt))
-- Change WSL2 networking to mirrored. Update `%USERPROFILE%\.wslconfig`:
-
-```ini
-[wsl2]
-networkingMode=mirrored
-```
-
+- Change WSL2 networking to mirrored:
+  - Start menu > WSL Settings > Networking > Networking mode: `Mirrored`
 - Restart WSL2
 
 ```sh
@@ -101,13 +147,8 @@ wsl --shutdown
   - Can use vanilla [Arm GNU Toolchain](https://developer.arm.com/Tools%20and%20Software/GNU%20Toolchain) instead
 - Install [J-Link Software and Documentation Pack](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack) on Windows
   - Set the Windows user environment variable `JLINK_PATH`=`C:\Program Files\SEGGER\JLink` (installation location of J-Link executables)
-- Change WSL2 networking to mirrored. Update `%USERPROFILE%\.wslconfig`:
-
-```ini
-[wsl2]
-networkingMode=mirrored
-```
-
+- Change WSL2 networking to mirrored:
+  - Start menu > WSL Settings > Networking > Networking mode: `Mirrored`
 - Restart WSL2
 
 ```sh
@@ -153,4 +194,4 @@ wsl --shutdown
 
 - Run script file to start J-LINK GDB server on Windows: [jlink-gdb-server.cmd](assets/jlink-gdb-server.cmd) supplying the device as the only argument
   - Example: `jlink-gdb-server STM32L4S9ZI`
-- Start debugging in VSCode -> WSL2
+- Start debugging in VSCode -> WSL2 -> Windows GDB server
