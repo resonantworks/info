@@ -1,0 +1,227 @@
+# WSL2
+
+- [WSL2](#wsl2)
+  - [Install](#install)
+  - [WSL Settings](#wsl-settings)
+  - [Install distribution](#install-distribution)
+  - [Distribution snapshots](#distribution-snapshots)
+    - [Snapshot distribution](#snapshot-distribution)
+    - [Restore distribution](#restore-distribution)
+  - [Access USB device within WSL2](#access-usb-device-within-wsl2)
+  - [STM32](#stm32)
+    - [ST-LINK without usbipd (ST-LINK GDB server - non-admin)](#st-link-without-usbipd-st-link-gdb-server---non-admin)
+    - [J-LINK without usbipd (J-LINK GDB server - non-admin)](#j-link-without-usbipd-j-link-gdb-server---non-admin)
+
+## Install
+
+- Admin command prompt:
+
+```sh
+wsl --install
+wsl --update
+```
+
+## WSL Settings
+
+Start menu > WSL Settings:
+
+- Memory and processor
+  - Processor Count: *Total core count if compiling, or nearest, otherwise half or quarter*
+  - Memory Size: *50% total RAM size*
+  - Swap Size: *100% total RAM size*
+  - *(optional)* Swap file location: *Set to specific path (ie, `C:\wsl\swap.vhdx`)*
+- File System
+  - Default VHD Size: *Sensible limit (ie, `32768Mb`)*
+-Networking
+  - Networking mode: `NAT`
+    - *or* `Mirrored` *if going to debug firmware using vscode:WSL --> Windows ST-LINK/J-LINK GDB server*
+- Optional Features
+  - Enable GUI applications: `ON`
+  - Enable nested virtualisation: `ON`
+  - Enable sparse VHD by default: `ON`
+
+## Install distribution
+
+Create folder to hold `vhdx` files (ie, `C:\wsl\ubuntu`)
+
+Command prompt:
+
+```sh
+wsl --list --online                # <-- Note NAME of wanted distro
+
+wsl --install NAME --location PATH
+# wsl --install Ubuntu-26.04 --location "C:\wsl\ubuntu"
+
+wsl --manage NAME --resize SIZE    # (optional) Only required when different to WSL Settings
+# wsl --manage Ubuntu-26.04 --resize 64GB
+
+wsl --set-default NAME
+# wsl --set-default Ubuntu-26.04
+wsl --list
+```
+
+## Distribution snapshots
+
+### Snapshot distribution
+
+1. Close all terminals/sessions to the instance
+1. Command prompt:
+
+```sh
+wsl --shutdown
+wsl --list --verbose                            # ensure instance STATE is Stopped
+wsl --export NAME backup.tar.gz --format tar.gz # or 'tar.xz' - much slower!
+# wsl --export Ubuntu-26.04 ubuntu-26.04.tar.gz --format tar.gz
+```
+
+### Restore distribution
+
+1. Close all terminals/sessions to the instance
+1. Command prompt:
+
+```sh
+wsl --shutdown
+wsl --unregister NAME                 # remove existing instance
+wsl --import NAME PATH backup.tar.gz  # restore instance from backup
+# wsl --unregister Ubuntu-26.04
+# wsl --import Ubuntu-26.04 C:\wsl\ubuntu ubuntu-26.04.tar.gz
+```
+
+## Access USB device within WSL2
+
+- Install latest [usbipd-win](https://github.com/dorssel/usbipd-win/releases)
+- Enroll device for attachment, *admin cmd*:
+
+```sh
+usbipd list
+usbipd bind --busid <BUS ID of USB device>
+```
+
+> To permanently attach to WSL use `usbipd attach --wsl --busid <ID> --auto-attach`
+
+- Attach device to WSL, *user cmd*:
+
+```sh
+usbipd attach --wsl --busid <BUS ID of USB device>
+```
+
+- Detach device from WSL, *user cmd*:
+
+```sh
+usbipd detach --wsl --busid <BUS ID of USB device>
+```
+
+- Verify usb device attached, *WSL bash*:
+
+```sh
+lsusb
+# Bus 001 Device 002: ID 0483:374b STMicroelectronics ST-LINK/V2.1
+```
+
+## STM32
+
+### ST-LINK without usbipd (ST-LINK GDB server - non-admin)
+
+- Install [STM32CubeCLT](https://www.st.com/en/development-tools/stm32cubeclt.html) on both Windows and within WSL2 ([Fedora example](fedora.md#stm32-clt))
+- Change WSL2 networking to mirrored:
+  - Start menu > WSL Settings > Networking > Networking mode: `Mirrored`
+- Restart WSL2
+
+```sh
+wsl --shutdown
+```
+
+- Add `launch.json` config:
+
+```json
+{
+    "name": "ST-LINK (gdbserver)",
+    "device": "<<MCU>>",
+    "svdFile": "${env:STM32CLT_PATH}/STMicroelectronics_CMSIS_SVD/<<MCU>>.svd",
+    "type": "cortex-debug",
+    "cwd": "${workspaceRoot}",
+    "executable": "${command:cmake.launchTargetPath}",
+    "request": "launch",
+    "servertype": "external",
+    "gdbTarget": "localhost:61234",
+    "armToolchainPath": "${env:STM32CLT_PATH}/GNU-tools-for-STM32/bin",
+    "runToEntryPoint": "main",
+    "overrideLaunchCommands": [
+    "monitor halt",
+    "load",
+    "monitor reset",
+    "monitor halt"
+    ],
+    "overrideRestartCommands": [
+    "monitor reset",
+    "monitor halt"
+    ],
+    "overrideResetCommands": [
+    "monitor reset",
+    "monitor halt"
+    ],
+    "liveWatch": {
+    "enabled": true,
+    "samplesPerSecond": 2
+    }
+},
+```
+
+- Run script file to start ST-LINK GDB server on Windows: [start-st-link-gdb-server.cmd](assets/stlink-gdb-server.cmd)
+- Start debugging in VSCode -> WSL2
+
+### J-LINK without usbipd (J-LINK GDB server - non-admin)
+
+- Install [STM32CubeCLT](https://www.st.com/en/development-tools/stm32cubeclt.html) within WSL2 ([Fedora example](fedora.md#stm32-clt))
+  - *Required for ST tweaked Arm GNU gdb and SVD files*
+  - Can use vanilla [Arm GNU Toolchain](https://developer.arm.com/Tools%20and%20Software/GNU%20Toolchain) instead
+- Install [J-Link Software and Documentation Pack](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack) on Windows
+  - Set the Windows user environment variable `JLINK_PATH`=`C:\Program Files\SEGGER\JLink` (installation location of J-Link executables)
+- Change WSL2 networking to mirrored:
+  - Start menu > WSL Settings > Networking > Networking mode: `Mirrored`
+- Restart WSL2
+
+```sh
+wsl --shutdown
+```
+
+- Add `launch.json` config:
+
+```json
+{
+  "name": "J-Link (gdbserver)",
+  "device": "<<device ID>>",
+  "svdFile": "${env:STM32CLT_PATH}/STMicroelectronics_CMSIS_SVD/<<device ID>>.svd",
+  "type": "cortex-debug",
+  "cwd": "${workspaceRoot}",
+  "executable": "${command:cmake.launchTargetPath}",
+  "request": "launch",
+  "servertype": "external",
+  "gdbTarget": "localhost:2331",
+  "armToolchainPath": "${env:STM32CLT_PATH}/GNU-tools-for-STM32/bin",
+  "runToEntryPoint": "main",
+  "liveWatch": {
+    "enabled": true,
+    "samplesPerSecond": 2
+  },
+  "overrideLaunchCommands": [
+    "monitor halt",
+    "monitor reset",
+    "load",
+    "monitor reset",
+    "monitor halt"
+  ],
+  "overrideRestartCommands": [
+    "monitor reset",
+    "monitor halt"
+  ],
+  "overrideResetCommands": [
+    "monitor reset",
+    "monitor halt"
+  ]
+},
+```
+
+- Run script file to start J-LINK GDB server on Windows: [jlink-gdb-server.cmd](assets/jlink-gdb-server.cmd) supplying the device as the only argument
+  - Example: `jlink-gdb-server STM32L4S9ZI`
+- Start debugging in VSCode -> WSL2 -> Windows GDB server
