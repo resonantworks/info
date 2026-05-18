@@ -7,7 +7,6 @@
     - [General](#general)
     - [Vim](#vim)
     - [C/C++](#cc)
-    - [Git bash status line](#git-bash-status-line)
       - [32-bit C/C++ GCC/LLVM CMake build fails on missing include](#32-bit-cc-gccllvm-cmake-build-fails-on-missing-include)
     - [.NET](#net)
     - [STM32 CLT](#stm32-clt)
@@ -57,16 +56,6 @@ sudo dnf install glibc-devel.i686 libstdc++-devel.i686 # gcc 32-bit support
 
 sudo dnf install llvm clang lld lldb clang-tools-extra clang-analyzer
 sudo dnf install compiler-rt.i686 libcxx.i686 libstdc++-devel.i686 # llvm 32-bit support (stdlib=libc++)
-```
-
-### Git bash status line
-
-Append the following to  `~/.bashrc`
-
-```sh
-# git bash status line
-source /usr/share/git-core/contrib/completion/git-prompt.sh
-export PS1='\[\e[32m\]\u@\h\[\e[0m\]:\[\e[33m\]\w\[\e[36m\]$(__git_ps1 " (%s)")\[\e[0m\]$(if [ -n "$(__git_ps1)" ]; then echo -e "\n\$ "; else echo "\$ "; fi)'
 ```
 
 #### 32-bit C/C++ GCC/LLVM CMake build fails on missing include

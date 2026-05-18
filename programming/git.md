@@ -2,7 +2,8 @@
 
 - [Git](#git)
   - [General config](#general-config)
-    - [Git - SSH key](#git---ssh-key)
+  - [SSH key](#ssh-key)
+  - [Git bash status line](#git-bash-status-line)
   - [Delta - better terminal diff viewer](#delta---better-terminal-diff-viewer)
   - [Github](#github)
     - [Account repository space used](#account-repository-space-used)
@@ -15,13 +16,23 @@ git config --global user.email first.last@company.com
 git config --global core.editor vim
 ```
 
-### Git - SSH key
+## SSH key
 
 ```sh
 ssh-keygen -t ed25519 -C first.last@company.com
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 cat ~/.ssh/id_ed25519.pub
+```
+
+## Git bash status line
+
+Append the following to  `~/.bashrc`
+
+```sh
+# git bash status line
+source /usr/share/git-core/contrib/completion/git-prompt.sh
+export PS1='\[\e[32m\]\u@\h\[\e[0m\]:\[\e[33m\]\w\[\e[36m\]$(__git_ps1 " (%s)")\[\e[0m\]$(if [ -n "$(__git_ps1)" ]; then echo -e "\n\$ "; else echo "\$ "; fi)'
 ```
 
 ## Delta - better terminal diff viewer

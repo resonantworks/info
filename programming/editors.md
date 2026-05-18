@@ -1,11 +1,11 @@
-# Linux
+# Editors
 
-- [Linux](#linux)
-  - [WIM](#wim)
+- [Editors](#editors)
+  - [Vim](#vim)
 
-## WIM
+## Vim
 
-Uses [.vimrc](/assets/.vimrc).
+Uses [.vimrc](assets/.vimrc).
 
 ```sh
 mkdir -p ~/.vim/swap ~/.vim/undo
