@@ -46,8 +46,8 @@ sudo apt install curl jq pipx
 ### C/C++ - Default compiler versions
 
 ```sh
-# gcc, make, etc
-sudo apt install build-essential cmake gdb ninja-build
+# default gcc version, make, cmake ninja, etc
+sudo apt install build-essential cmake gdb lcov ninja-build
 
 # llvm
 sudo apt install llvm clang lld lldb clang-tools clang-format clang-tidy clangd libc++-dev libc++abi-dev libclang-rt-dev
@@ -65,7 +65,7 @@ pipx ensurepath
 
 ```sh
 # default gcc version, make, cmake ninja, etc
-sudo apt install build-essential cmake gdb ninja-build
+sudo apt install build-essential cmake gdb lcov ninja-build
 
 # gcc 13
 sudo apt install gcc-13 g++-13
@@ -131,35 +131,33 @@ gcc --version   # should be 13
 clang --version # should be 20
 
 # clangd-tidy
-pipx install clangd-tidy
 pipx ensurepath
+pipx install clangd-tidy lcov_cobertura
 ```
 
-<!-- ### STM32 CLT
+### STM32 CLT
 
-Install dependencies:
+If the instructions below do not work, refer to the [UM3098 - STM32CubeCLT installation guide](https://www.st.com/resource/en/user_manual/um3089-stm32cubeclt-installation-guide-stmicroelectronics.pdf).
+
+1. Download the [STM32CubeCLT Debian Linux Installer](https://www.st.com/en/development-tools/stm32cubeclt.html#section-get-software-table)
+version specified in [README.md > Tool versions](../README.md#tool-versions) and copy to `C:\temp`
+1. Open a Terminal to the distribution (Windows Terminal > `JFD.Ubuntu`) and execute the following shell actions:
 
 ```sh
-sudo apt install ncurses-compat-libs
+# extract and run installer
+cd /tmp
+unzip /mnt/c/temp/st-stm32cubeclt*deb_bundle.sh.zip
+sudo sh ./st-stm32cubeclt*deb_bundle.sh
+# Accept licence [y]
+
+# remove injected path (installer forces bundled old versions of CMake amd ninja-build, verify with 'which cmake')
+sudo mv /etc/profile.d/cubeclt-bin-path_*.sh /etc/profile.d/cubeclt-bin-path.sh.disable
+
+# install dependencies
+wget http://archive.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
+wget http://archive.ubuntu.com/ubuntu/pool/universe/n/ncurses/libncurses5_6.3-2ubuntu0.1_amd64.deb
+sudo dpkg -i libtinfo5_*.deb libncurses5_*.deb
+
+# add toolchain environment variable to specify STM32CubeCLT location
+echo "export STM32CLT_PATH='$(ls -d /opt/st/stm32cubeclt_*.*.* | head -n1)'" >> ~/.bashrc
 ```
-
-- Download generic version of [STM32CubeCLT (STM32CubeCLT Generic Linux Installer)](https://www.st.com/en/development-tools/stm32cubeclt.html#section-get-software-table)
-
-```sh
-# extract rpm files
-sh st-stm32cubeclt_*_amd64.rpm_bundle.sh --target extracted_clt --noexec
-sudo rpm -ivh --nodigest --nodeps st-stm32cubeclt_*.x86_64.rpm
-```
-
-- Remove injected paths added on start-up
-
-```sh
-sudo mv /etc/profile.d/cubeclt-bin-path_1.18.0.sh /etc/profile.d/cubeclt-bin-path_1.18.0.sh.disable
-```
-
-- Add environment variable used by CMake scripts to `~/.bashrc`
-
-```sh
-# STM32CubeCLT
-export STM32CLT_PATH='/opt/st/stm32cubeclt_?.???.0'
-``` -->

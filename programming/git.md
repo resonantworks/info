@@ -23,6 +23,7 @@ ssh-keygen -t ed25519 -C first.last@company.com
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 cat ~/.ssh/id_ed25519.pub
+# Use output to register new SSH key with source provider
 ```
 
 ## Git bash status line

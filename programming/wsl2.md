@@ -159,11 +159,7 @@ wsl --shutdown
     "overrideResetCommands": [
     "monitor reset",
     "monitor halt"
-    ],
-    "liveWatch": {
-    "enabled": true,
-    "samplesPerSecond": 2
-    }
+    ]
 },
 ```
 
@@ -200,10 +196,6 @@ wsl --shutdown
   "gdbTarget": "localhost:2331",
   "armToolchainPath": "${env:STM32CLT_PATH}/GNU-tools-for-STM32/bin",
   "runToEntryPoint": "main",
-  "liveWatch": {
-    "enabled": true,
-    "samplesPerSecond": 2
-  },
   "overrideLaunchCommands": [
     "monitor halt",
     "monitor reset",
