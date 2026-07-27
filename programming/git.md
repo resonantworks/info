@@ -1,14 +1,18 @@
 # Git
 
 - [Git](#git)
-  - [General config](#general-config)
-  - [SSH key](#ssh-key)
-  - [Git bash status line](#git-bash-status-line)
-  - [Delta - better terminal diff viewer](#delta---better-terminal-diff-viewer)
-  - [Github](#github)
-    - [Account repository space used](#account-repository-space-used)
+  - [Config](#config)
+    - [General config](#general-config)
+    - [SSH key](#ssh-key)
+    - [VIM - disable default 70 char wrap](#vim---disable-default-70-char-wrap)
+    - [Git bash status line](#git-bash-status-line)
+    - [Delta - better terminal diff viewer](#delta---better-terminal-diff-viewer)
+    - [Github](#github)
+      - [Account repository space used](#account-repository-space-used)
 
-## General config
+## Config
+
+### General config
 
 ```sh
 git config --global user.name "First Last"
@@ -16,7 +20,7 @@ git config --global user.email first.last@company.com
 git config --global core.editor vim
 ```
 
-## SSH key
+### SSH key
 
 ```sh
 ssh-keygen -t ed25519 -C first.last@company.com
@@ -26,7 +30,21 @@ cat ~/.ssh/id_ed25519.pub
 # Use output to register new SSH key with source provider
 ```
 
-## Git bash status line
+### VIM - disable default commit message 70 char wrapping
+
+Create file: `~/.vim/after/ftplugin/gitcommit.vim`
+
+```sh
+mkdir -p ~/.vim/after/ftplugin
+```
+
+with content:
+
+```txt
+setlocal formatoptions-=t formatoptions-=l
+```
+
+### Git bash status line
 
 Append the following to  `~/.bashrc`
 
@@ -36,7 +54,7 @@ source /usr/share/git-core/contrib/completion/git-prompt.sh
 export PS1='\[\e[32m\]\u@\h\[\e[0m\]:\[\e[33m\]\w\[\e[36m\]$(__git_ps1 " (%s)")\[\e[0m\]$(if [ -n "$(__git_ps1)" ]; then echo -e "\n\$ "; else echo "\$ "; fi)'
 ```
 
-## Delta - better terminal diff viewer
+### Delta - better terminal diff viewer
 
 1. Follow instructions on [delta > Getting Started](https://github.com/dandavison/delta#get-started)
    1. Ubuntu: `sudo apt install git-delta`
@@ -59,9 +77,9 @@ export PS1='\[\e[32m\]\u@\h\[\e[0m\]:\[\e[33m\]\w\[\e[36m\]$(__git_ps1 " (%s)")\
     conflictStyle = zdiff3
 ```
 
-## Github
+### Github
 
-### Account repository space used
+#### Account repository space used
 
 - Install [GitHub CLI](https://github.com/cli/cli?ref_product=cli&ref_type=engagement&ref_style=text#installation)
   - `choco install gh` or `winget install gh`
