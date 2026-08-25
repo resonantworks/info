@@ -4,7 +4,8 @@
   - [Config](#config)
     - [General config](#general-config)
     - [SSH key](#ssh-key)
-    - [VIM - disable default 70 char wrap](#vim---disable-default-70-char-wrap)
+    - [VIM - disable default 70 char wrap](#vim---disable-default-commit-message-70-char-wrapping)
+    - [Git bash bell and paste issues](#git-bash-bell-and-paste-issues)
     - [Git bash status line](#git-bash-status-line)
     - [Delta - better terminal diff viewer](#delta---better-terminal-diff-viewer)
     - [Github](#github)
@@ -42,6 +43,24 @@ with content:
 
 ```txt
 setlocal formatoptions-=t formatoptions-=l
+```
+
+### Git bash bell and paste issues
+
+Suppress flashing screen bell in Windows Terminal:
+
+`~/.inputrc`
+
+```sh
+set bell-style none
+```
+
+Suppress wrapper chars when pasting (`^[[200~PASTED TEXT~`):
+
+`~/.inputrc`
+
+```sh
+set enable-bracketed-paste off
 ```
 
 ### Git bash status line
