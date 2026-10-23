@@ -1,91 +1,15 @@
 # WSL2
 
 - [WSL2](#wsl2)
-  - [Install](#install)
-  - [WSL Settings](#wsl-settings)
-  - [Install distribution](#install-distribution)
-  - [Distribution snapshots](#distribution-snapshots)
-    - [Snapshot distribution](#snapshot-distribution)
-    - [Restore distribution](#restore-distribution)
+  - [Installation and management](#installation-and-management)
   - [Access USB device within WSL2](#access-usb-device-within-wsl2)
   - [STM32](#stm32)
     - [ST-LINK without usbipd (ST-LINK GDB server - non-admin)](#st-link-without-usbipd-st-link-gdb-server---non-admin)
     - [J-LINK without usbipd (J-LINK GDB server - non-admin)](#j-link-without-usbipd-j-link-gdb-server---non-admin)
 
-## Install
+## Installation and management
 
-- Admin command prompt:
-
-```sh
-wsl --install
-wsl --update
-```
-
-## WSL Settings
-
-Start menu > WSL Settings:
-
-- Memory and processor
-  - Processor Count: *Total core count if compiling, or nearest, otherwise half or quarter*
-  - Memory Size: *50% total RAM size*
-  - Swap Size: *100% total RAM size*
-  - *(optional)* Swap file location: *Set to specific path (ie, `C:\wsl\swap.vhdx`)*
-- File System
-  - Default VHD Size: *Sensible limit (ie, `32768Mb`)*
--Networking
-  - Networking mode: `NAT`
-    - *or* `Mirrored` *if going to debug firmware using vscode:WSL --> Windows ST-LINK/J-LINK GDB server*
-- Optional Features
-  - Enable GUI applications: `ON`
-  - Enable nested virtualisation: `ON`
-  - Enable sparse VHD by default: `ON`
-
-## Install distribution
-
-Create folder to hold `vhdx` files (ie, `C:\wsl\ubuntu`)
-
-Command prompt:
-
-```sh
-wsl --list --online                # <-- Note NAME of wanted distro
-
-wsl --install NAME --location PATH
-# wsl --install Ubuntu-26.04 --location "C:\wsl\ubuntu"
-
-wsl --manage NAME --resize SIZE    # (optional) Only required when different to WSL Settings
-# wsl --manage Ubuntu-26.04 --resize 64GB
-
-wsl --set-default NAME
-# wsl --set-default Ubuntu-26.04
-wsl --list
-```
-
-## Distribution snapshots
-
-### Snapshot distribution
-
-1. Close all terminals/sessions to the instance
-1. Command prompt:
-
-```sh
-wsl --shutdown
-wsl --list --verbose                            # ensure instance STATE is Stopped
-wsl --export NAME backup.tar.gz --format tar.gz # or 'tar.xz' - much slower!
-# wsl --export Ubuntu-26.04 ubuntu-26.04.tar.gz --format tar.gz
-```
-
-### Restore distribution
-
-1. Close all terminals/sessions to the instance
-1. Command prompt:
-
-```sh
-wsl --shutdown
-wsl --unregister NAME                 # remove existing instance
-wsl --import NAME PATH backup.tar.gz  # restore instance from backup
-# wsl --unregister Ubuntu-26.04
-# wsl --import Ubuntu-26.04 C:\wsl\ubuntu ubuntu-26.04.tar.gz
-```
+See [Systems > WSL2](../systems/wsl2.md)
 
 ## Access USB device within WSL2
 
